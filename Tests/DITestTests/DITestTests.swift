@@ -17,6 +17,7 @@ func canDoParameterpacks() async throws {
     let services = Services()
 
     services.add("Hello world")
+        .add(5)
 
     let result = try services.call { (hello: String) in
         #expect(hello == "Hello world")
@@ -25,8 +26,6 @@ func canDoParameterpacks() async throws {
     }
 
     #expect(result == 5)
-
-    services.add(5)
 
     let otherResult = try services.call { (hello: String, num: Int) in
         return "\(hello) \(num)"

@@ -17,14 +17,12 @@ class Services {
     public func get<T>(_ service: T.Type) -> T? {
         let name = String(describing: service)
 
-        let mapped = services[name].flatMap { serviceInstance in
-            return serviceInstance as? T
-        }
+        let mapped = services[name].flatMap { $0 as? T }
 
         return mapped
     }
 
-    public func throwingGet<T>(_ service: T.Type) throws -> T {
+    public func throwingGet<T>(_ service: T.Type) throws(ServiceError) -> T {
         guard let mapped = get(service) else {
             let name = String(describing: service)
             throw ServiceError.noSuchService(name: name)

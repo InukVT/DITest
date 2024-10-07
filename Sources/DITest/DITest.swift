@@ -10,7 +10,10 @@ class Services {
     }
 
     @discardableResult
-    public func add<T>(_ service: T.Type) -> Services {
+    public func add<each D, T>(_ serviceBuilder: (repeat each D) -> T) throws -> Services {
+        let name = String(describing: T.self)
+        services[name] = try call(callback: serviceBuilder)
+
         return self
     }
 
@@ -31,8 +34,8 @@ class Services {
         return mapped
     }
 
-    public func call<each T, G>(callback: (repeat each T) -> G) throws -> G {
-        return callback(repeat (try throwingGet((each T).self)))
+    public func call<each T, G>(callback: (repeat each T) -> G) throws(ServiceError) -> G {
+        callback(repeat (try throwingGet((each T).self)))
     }
 }
 

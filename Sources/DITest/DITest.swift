@@ -21,7 +21,6 @@ class Services {
 
     public func get<Service>(_ service: Service.Type) -> Service? {
         let name = String(describing: service)
-
         let mapped = services[name].flatMap { $0 as? Service }
 
         return mapped

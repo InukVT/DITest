@@ -1,10 +1,10 @@
 class Services {
-    private var services: [String: Any] = [:]
+    private var services: [ObjectIdentifier: Any] = [:]
 
     @discardableResult
     public func add<Service>(_ service: Service) -> Services {
-        let name = String(describing: Service.self)
-        services[name] = service
+        let identifier = ObjectIdentifier(Service.self)
+        services[identifier] = service
 
         return self
     }
@@ -13,15 +13,15 @@ class Services {
     public func add<each Dependency, Service>(_ serviceBuilder: (repeat each Dependency) -> Service)
         throws -> Services
     {
-        let name = String(describing: Service.self)
-        services[name] = try call(callback: serviceBuilder)
+        let identifier = ObjectIdentifier(Service.self)
+        services[identifier] = try call(callback: serviceBuilder)
 
         return self
     }
 
     public func get<Service>(_ service: Service.Type) -> Service? {
-        let name = String(describing: service)
-        let mapped = services[name].flatMap { $0 as? Service }
+        let identifier = ObjectIdentifier(Service.self)
+        let mapped = services[identifier].flatMap { $0 as? Service }
 
         return mapped
     }
